@@ -50,11 +50,11 @@ module "eks" {
     group1 = {
       name         = "${var.projectName}-node-group"
       ami_type       = "AL2023_x86_64_STANDARD"
-      instance_types = ["t3.medium"]
+      instance_types = [var.instanceType]
       capacity_type = "SPOT"
-      min_size     = 1
-      max_size     = 1
-      desired_size = 1
+      min_size     = var.minSize
+      max_size     = var.maxSize
+      desired_size = var.desiredSize
     }
   }
 

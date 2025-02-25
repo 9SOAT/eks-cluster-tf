@@ -7,5 +7,4 @@ terraform {
 }
 provider "aws" {
   region = var.awsRegion
-  profile = "fast_food"
 }

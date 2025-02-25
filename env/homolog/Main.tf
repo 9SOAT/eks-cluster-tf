@@ -1,7 +1,3 @@
 module "main" {
   source = "../../infra"
 }
-
-
-
-

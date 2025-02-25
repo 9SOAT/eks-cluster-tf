@@ -3,6 +3,5 @@ terraform {
     bucket = "fast-food-terraform-state"
     key    = "eks-cluster/terraform.tfstate"
     region = "us-east-1"
-    profile = "fast_food"
   }
 }
