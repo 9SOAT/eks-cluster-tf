@@ -1,6 +1,8 @@
 name: Create Infra AWS
 
 on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
   push:
     branches:
       - main
@@ -48,6 +50,6 @@ jobs:
         run: terraform plan -out=tfplan -no-color -input=false
         continue-on-error: true
 
-      - name: Terraform Apply
-        id: apply
-        run: terraform apply -input=false -auto-approve
+#      - name: Terraform Apply
+#        id: apply
+#        run: terraform apply -input=false -auto-approve
