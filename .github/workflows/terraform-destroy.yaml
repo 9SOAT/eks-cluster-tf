@@ -1,4 +1,4 @@
-name: Create Infra AWS
+name: Destroy Infra AWS
 
 on: workflow_dispatch
 
@@ -10,7 +10,7 @@ permissions:
   contents: read    # This is required for actions/checkout
 jobs:
 
-  create_infra:
+  destroy_infra:
     name: terraform
     runs-on: ubuntu-latest
     defaults:
@@ -47,7 +47,7 @@ jobs:
         run: terraform plan -out=tfplan -no-color -input=false
         continue-on-error: true
 
-      - name: Terraform Apply
-        id: apply
+      - name: Terraform Destroy
+        id: destroy
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform destroy -input=false -auto-approve
