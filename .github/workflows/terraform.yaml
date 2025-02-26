@@ -52,6 +52,7 @@ jobs:
         run: terraform plan -out=tfplan -no-color -input=false
         continue-on-error: true
 
-#      - name: Terraform Apply
-#        id: apply
-#        run: terraform apply -input=false -auto-approve
+      - name: Terraform Apply
+        id: apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform apply -input=false -auto-approve
