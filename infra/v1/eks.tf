@@ -16,6 +16,7 @@ module "eks" {
   control_plane_subnet_ids = concat(module.eks-vpc.public_subnets, module.eks-vpc.private_subnets)
 
   create_cluster_security_group = true
+  cluster_security_group_name = "${var.projectName}-eks-cluster-sg"
   cluster_security_group_description = "EKS cluster security group"
 
   bootstrap_self_managed_addons = true

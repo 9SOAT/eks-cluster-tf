@@ -1,8 +1,8 @@
 module "main" {
-  source = "../../infra"
+  source = "../../infra/v1"
   tags = {
-    "env" = "homolog",
-    "team" = "fast_food"
+    "env"      = "homolog",
+    "team"     = "fast_food"
     terraform  = "true"
     kubernetes = "fast-food-eks-cluster"
   }
