@@ -43,6 +43,7 @@ module "eks" {
   create_node_security_group = true
   node_security_group_enable_recommended_rules = true
   node_security_group_description = "EKS node group security group - used by nodes to communicate with the cluster API Server"
+  node_security_group_name = "${var.projectName}-eks-node-group-security-group"
 
   node_security_group_use_name_prefix = true
 

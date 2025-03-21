@@ -13,6 +13,16 @@ module "eks-vpc" {
   azs             = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1]]
   private_subnets = [cidrsubnet(var.cidr_block, 8, 110), cidrsubnet(var.cidr_block, 8, 120)]
   public_subnets  = [cidrsubnet(var.cidr_block, 8, 10), cidrsubnet(var.cidr_block, 8, 20)]
+  database_subnets = [cidrsubnet(var.cidr_block, 8, 130), cidrsubnet(var.cidr_block, 8, 140)]
+
+  create_database_subnet_group           = true
+  database_subnet_group_name             = "fast-food-database-subnet-group"
+  database_subnet_tags             = { Test: "fast-food-database-subnet" }
+  create_database_subnet_route_table     = true
+  create_database_internet_gateway_route = true
+
+
+  enable_dns_support   = true
 
   create_igw = true # Default is true
 
