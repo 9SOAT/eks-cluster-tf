@@ -34,8 +34,8 @@ variable "eksVersion" {
 variable "tags" {
     type = map(string)
     default = {
-        terraform  = "true"
-        kubernetes = "fast-food-eks-cluster"
+        Terraform  = "true"
+        Kubernetes = "fast-food-eks-cluster"
     }
     description = "Tags to apply to all resources"
 }

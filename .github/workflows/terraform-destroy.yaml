@@ -1,4 +1,4 @@
-name: Destroy Infra AWS
+name: Create Infra AWS
 
 on: workflow_dispatch
 
