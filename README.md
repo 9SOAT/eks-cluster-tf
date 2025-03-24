@@ -1,4 +1,4 @@
-# cluster-eks-tf
+# Cluster EKS
 Repositório para infra Kubernetes(AWS EKS) com Terraform
 
 
