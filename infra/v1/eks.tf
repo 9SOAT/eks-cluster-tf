@@ -49,7 +49,7 @@ module "eks" {
 
   subnet_ids = module.eks-vpc.private_subnets
   eks_managed_node_groups = {
-    group1 = {
+    fast_food = {
       name         = "${var.projectName}-node-group"
       ami_type       = "AL2023_x86_64_STANDARD"
       instance_types = [var.instanceType]
@@ -57,6 +57,15 @@ module "eks" {
       min_size     = var.minSize
       max_size     = var.maxSize
       desired_size = var.desiredSize
+    }
+
+    fast_food_consumer = {
+      name           = "fast-food-consumer-node-group"
+      instance_types = ["t3.small"]
+      desired_size   = 1
+      min_size       = 1
+      max_size       = 2
+      capacity_type  = "SPOT"
     }
   }
 

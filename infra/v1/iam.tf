@@ -86,3 +86,25 @@ resource "aws_eks_access_entry" "manager" {
   kubernetes_groups = ["my-admin"]
 }
 
+resource "aws_iam_role" "fast_food_consumer_irsa" {
+  name = "fast-food-consumer-irsa"
+
+  assume_role_policy = data.aws_iam_policy_document.fast_food_consumer_assume_role.json
+}
+
+data "aws_iam_policy_document" "fast_food_consumer_assume_role" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider_url}:sub"
+      values   = ["system:serviceaccount:fast-food-consumer:default"]
+    }
+  }
+}

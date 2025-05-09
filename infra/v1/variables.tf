@@ -11,6 +11,10 @@ variable "projectName" {
     default = "fast-food"
 }
 
+variable "projectNameConsumer" {
+  default = "fast-food-consumer"
+}
+
 variable "instanceType" {
     default = "t3.medium"
 }

@@ -16,3 +16,9 @@ resource "kubectl_manifest" "secret" {
 
   depends_on = [module.eks]
 }
+
+resource "kubernetes_namespace" "fast_food_consumer" {
+  metadata {
+    name = "fast-food-consumer"
+  }
+}
