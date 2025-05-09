@@ -103,7 +103,7 @@ data "aws_iam_policy_document" "fast_food_consumer_assume_role" {
 
     condition {
       test     = "StringEquals"
-      variable = "${module.eks.oidc_provider_url}:sub"
+      variable = "${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}:sub"
       values   = ["system:serviceaccount:fast-food-consumer:default"]
     }
   }
