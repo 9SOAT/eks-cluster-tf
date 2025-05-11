@@ -16,15 +16,15 @@ variable "instanceType" {
 }
 
 variable "minSize" {
-    default = 1
-}
-
-variable "maxSize" {
     default = 2
 }
 
+variable "maxSize" {
+    default = 5
+}
+
 variable "desiredSize" {
-    default = 1
+    default = 2
 }
 
 variable "eksVersion" {
