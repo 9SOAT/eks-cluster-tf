@@ -124,8 +124,30 @@ resource "aws_iam_role" "pod_assume_role" {
   })
 }
 
-
 resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
   role       = aws_iam_role.pod_assume_role.name
   policy_arn = aws_iam_policy.secrets_manager_read_only.arn
+}
+
+resource "aws_iam_role" "fast_food_consumer_irsa" {
+  name = "fast-food-consumer-irsa"
+
+  assume_role_policy = data.aws_iam_policy_document.fast_food_consumer_assume_role.json
+}
+
+data "aws_iam_policy_document" "fast_food_consumer_assume_role" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}:sub"
+      values   = ["system:serviceaccount:fast-food-consumer:default"]
+    }
+  }
 }
