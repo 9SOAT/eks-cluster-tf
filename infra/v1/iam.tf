@@ -146,6 +146,33 @@ resource "aws_iam_policy" "dynamodb_consumer_access" {
 POLICY
 }
 
+resource "aws_iam_role" "fast_food_consumer_irsa" {
+  name = "fast-food-consumer-irsa"
+
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Principal": {
+        "Federated": "${module.eks.oidc_provider[0].arn}"
+      },
+      "Condition": {
+        "StringEquals": {
+          "${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}:sub": "system:serviceaccount:fast-food-consumer:default"
+        }
+      }
+    }
+  ]
+}
+POLICY
+
+  depends_on = [module.eks]
+}
+
+
 resource "aws_iam_role_policy_attachment" "attach_dynamodb_to_consumer_irsa" {
   role       = aws_iam_role.fast_food_consumer_irsa.name
   policy_arn = aws_iam_policy.dynamodb_consumer_access.arn
