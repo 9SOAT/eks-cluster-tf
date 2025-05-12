@@ -129,25 +129,24 @@ resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
   policy_arn = aws_iam_policy.secrets_manager_read_only.arn
 }
 
-resource "aws_iam_role" "fast_food_consumer_irsa" {
-  name = "fast-food-consumer-irsa"
+resource "aws_iam_policy" "dynamodb_consumer_access" {
+  name = "FastFoodConsumerDynamoAccess"
 
-  assume_role_policy = data.aws_iam_policy_document.fast_food_consumer_assume_role.json
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "dynamodb:*",
+      "Resource": "arn:aws:dynamodb:${var.awsRegion}:${data.aws_caller_identity.current.account_id}:table/consumer"
+    }
+  ]
+}
+POLICY
 }
 
-data "aws_iam_policy_document" "fast_food_consumer_assume_role" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-
-    principals {
-      type        = "Federated"
-      identifiers = [module.eks.oidc_provider_arn]
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(module.eks.cluster_oidc_issuer_url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:fast-food-consumer:default"]
-    }
-  }
+resource "aws_iam_role_policy_attachment" "attach_dynamodb_to_consumer_irsa" {
+  role       = aws_iam_role.fast_food_consumer_irsa.name
+  policy_arn = aws_iam_policy.dynamodb_consumer_access.arn
 }
