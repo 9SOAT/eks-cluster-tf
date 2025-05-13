@@ -76,13 +76,13 @@ resource "aws_eks_pod_identity_association" "aws_eks_pod_identity_association" {
 resource "kubernetes_service_account_v1" "fast_food_consumer_sa" {
   metadata {
     name      = "fast-food-consumer-sa"
-    namespace = "fast-food-consumer"
+    namespace = "default"
   }
 }
 
 resource "aws_eks_pod_identity_association" "fast_food_consumer_identity" {
   cluster_name    = module.eks.cluster_name
-  namespace       = "fast-food-consumer"
+  namespace       = "default"
   service_account = kubernetes_service_account_v1.fast_food_consumer_sa.metadata[0].name
   role_arn        = aws_iam_role.fast_food_consumer_pod_role.arn
 
