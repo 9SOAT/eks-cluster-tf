@@ -128,3 +128,43 @@ resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
   role       = aws_iam_role.pod_assume_role.name
   policy_arn = aws_iam_policy.secrets_manager_read_only.arn
 }
+
+resource "aws_iam_policy" "dynamodb_consumer_access" {
+  name = "FastFoodConsumerDynamoAccess"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "dynamodb:*",
+      "Resource": "arn:aws:dynamodb:${var.awsRegion}:${data.aws_caller_identity.current.account_id}:table/consumer"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role" "fast_food_consumer_pod_role" {
+  name = "fast-food-consumer-pod-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        Service = "pods.eks.amazonaws.com"
+      },
+      Action = [
+        "sts:AssumeRole",
+        "sts:TagSession"
+      ]
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_dynamo_to_consumer_pod_role" {
+  role       = aws_iam_role.fast_food_consumer_pod_role.name
+  policy_arn = aws_iam_policy.dynamodb_consumer_access.arn
+}
