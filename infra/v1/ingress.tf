@@ -35,7 +35,6 @@ controller:
   YAML
 }
 
-
 resource "helm_release" "ingress-nginx" {
   name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
@@ -44,36 +43,4 @@ resource "helm_release" "ingress-nginx" {
   create_namespace = true
   version          = "4.12.2"
   values = [local.ingress_yaml]
-}
-
-resource "kubernetes_ingress_v1" "ingress" {
-  metadata {
-    name      = "fast-food-catalog-ingress"
-    namespace = "default"
-    annotations = {
-      "nginx.ingress.kubernetes.io/use-regex" = "true"
-      "nginx.ingress.kubernetes.io/rewrite-target" = "/$2"
-    }
-  }
-
-  spec {
-    ingress_class_name = "nginx"
-    rule {
-      http {
-        path {
-          path      = "/catalog(/|$)(.*)"
-          path_type = "ImplementationSpecific"
-
-          backend {
-            service {
-              name = "fast-food-catalog-svc"
-              port {
-                number = 80
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 }
