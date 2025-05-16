@@ -57,7 +57,7 @@ module "ecr_fast_food_consumer" {
 module "ecr_helm_charts" {
   source = "terraform-aws-modules/ecr/aws"
 
-  repository_name = "helm-charts"
+  repository_name = "helm-charts/micro-service"
   repository_read_write_access_arns = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/gh_terraform"]
   repository_lifecycle_policy = local.repository_lifecycle_policy
   tags = var.tags
